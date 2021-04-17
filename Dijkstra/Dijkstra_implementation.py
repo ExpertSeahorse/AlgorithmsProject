@@ -45,6 +45,7 @@ class Graph:
         else:
             self.vertex_arr = matrix
 
+        # index of 0
         self.blanki = [v.label for v in self.vertex_arr].index(0)
 
         # total manhattan distance of the graph from the goal
@@ -148,6 +149,8 @@ class Graph:
         return self.vertex_arr == other.vertex_arr
     def __cmp__(self, other):
         return cmp(self.val, other.val)
+    
+    # How to print the Graph
     def __str__(self):
         if self.prev:
             return (
@@ -173,6 +176,7 @@ def Dijkstra(init):
     closed_states = []
 
     while len(open_states):
+        # Extract the open state with the lowest priority 
         s = open_states[0]
         prio = open_states[0].prio
         for state in open_states:
@@ -193,7 +197,7 @@ def Dijkstra(init):
         blanki = s.blanki
         states=[]
 
-        # Create a new Graph for every possible move at the open state 
+        # Create a new Graph for every possible move at the open state, defined by the location of the 0
         # new Graph = curr Graph but prio=curr+moved_tile, prev=curr_Graph, array= curr_after_swap
         if blanki not in [0, 1, 2]:
             states.append(Graph(s.swap(blanki, blanki-3), s.prio+s.vertex_arr[blanki-3].label, s, "move blank up"))
@@ -239,14 +243,20 @@ def Dijkstra(init):
     else:
         return "no path found"
 
+    # get the total number of states and reset the value
+    global state_id
+    #print("Total states observed:", state_id)
+    state_id = 0 
+
     # get the total number of created states, the priority of the final state (=cost), and the moves needed to reach it
+    cost = s.prio
     prev = []
     prev_moves = []
-    print("Total states observed:", state_id)
+    
     while s.prev:
         prev_moves.append(s.prev_move)
         s = s.prev
-    return s.prio, prev_moves[::-1]
+    return cost, prev_moves[::-1]
 
 # if running this file directly, run the algorithm on the first graph
 if __name__ == "__main__":
