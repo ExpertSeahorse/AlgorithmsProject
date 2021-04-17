@@ -25,7 +25,7 @@ class Vertex:
     def __cmp__(self, other):
         return cmp(self.label, other.label)
     def __str__(self):
-        return f"{self.label}"#, {self.index})"
+        return f"{self.label}"
 
 
 class Graph:
