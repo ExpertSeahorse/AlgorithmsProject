@@ -1,9 +1,14 @@
 #include <iostream>
+#include <string.h>
+#include <chrono>
+#include <fstream>
 #include "Bfs_implementation.h"
 
 using namespace std;
+
 template <typename Tiles>
 
+//recursive function for BFS
 bool BFS(const Tiles &goal, queue<Tiles> &mod, set<Tiles> &closed, Tiles &sol)
 {
     if (mod.empty()){
@@ -20,7 +25,7 @@ bool BFS(const Tiles &goal, queue<Tiles> &mod, set<Tiles> &closed, Tiles &sol)
         return 1;
     }
     
-    if (closed.size()==0 || (closed.find(temp)==closed.end())){
+    if (closed.size()==0 || (closed.find(temp)==closed.end()) ){
     
         vector<Tiles> possible_path;
         possible_path = temp.expand();
@@ -33,20 +38,45 @@ bool BFS(const Tiles &goal, queue<Tiles> &mod, set<Tiles> &closed, Tiles &sol)
     return BFS(goal,mod,closed,sol);
 }
 
-int main()
+int main(int argc, char * const argv[])
 {
-    int initialT[3][3] = {
+     int initialT1[3][3] = {
         {1,3,4},
         {8,0,2},
         {7,6,5}
     };
+     int initialT2[3][3] = {
+        {1,3,4},
+        {8,0,6},
+        {7,5,2}
+    };  
     
-    State initial(initialT);
+    //2 graphs available     
+    if(strcmp(argv[1],"1") == 0){
     
+    ifstream file("Graph1.txt");
+    if(file.is_open())
+    {
+        int initialT1[3][3];
+        
+        for(int i=0; i<3; i++)
+        {
+            for(int j =0; j<3; j++)
+            {
+              file >> initialT1[i][j];
+            }
+        }
+    }
+    
+    State initial(initialT1);
+              
     cout<<"Given puzzle:"<<endl;
     cout<<initial.toString()<< endl;
     
-    int goalT[3][3] = {
+    queue <State> mod;
+    mod.push(initial);
+    
+     int goalT[3][3] = {
         {1,2,3},
         {8,0,4},
         {7,6,5}
@@ -59,12 +89,68 @@ int main()
     set <State> closed;
     State sol;
     
-    queue <State> mod;
-    mod.push(initial);
-        
+    auto start = chrono::high_resolution_clock::now();        
     BFS(goal,mod,closed,sol);
+    auto end = chrono::high_resolution_clock::now();
+    
     
     cout<<"The shortest path cost using BFS: "<< sol.getPath() << " " << endl;
+    
+    
+      cout<< "Performance is " << chrono::duration<int64_t,nano>(end-start).count() << " in nano seconds and " <<
+        chrono::duration<double,milli>(end-start).count() << " in milliseconds " << endl;
+        
+    }else if(strcmp(argv[1],"2") == 0){
+    
+    ifstream file("Graph2.txt");
+    if(file.is_open())
+    {
+        int initialT2[3][3];
+        
+        for(int i=0; i<3; i++)
+        {
+            for(int j =0; j<3; j++)
+            {
+              file >> initialT2[i][j];
+            }
+        }
+    }
+       State initial(initialT2); 
+             
+    cout<<"Given puzzle:"<<endl;
+    cout<<initial.toString()<< endl;  
+    
+    queue <State> mod;
+    mod.push(initial);
+    
+     int goalT[3][3] = {
+        {1,2,3},
+        {8,0,4},
+        {7,6,5}
+    };
+    
+    State goal(goalT);
+    cout<<"Goal puzzle:"<<endl;
+    cout<<goal.toString()<< endl;
+        
+    set <State> closed;
+    State sol;
+    
+    auto start = chrono::high_resolution_clock::now();        
+    BFS(goal,mod,closed,sol);
+    auto end = chrono::high_resolution_clock::now();
+
+    cout<<"The shortest path cost using BFS: "<< sol.getPath() << " " << endl;
+    
+    
+    cout<< "Performance is " << chrono::duration<int64_t,nano>(end-start).count() << " in nano seconds and " <<
+        chrono::duration<double,milli>(end-start).count() << " in milliseconds "<< endl;
+            
+    }else{
+       cout << "Please choose either 1 or 2" << endl; 
+       return 0;
+    }
+    
     
     return 0;
 }

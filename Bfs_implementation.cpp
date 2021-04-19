@@ -47,34 +47,35 @@ bool operator< (const State& a,const State& o){
 }
 
 string State::toString() const {
-    stringstream stringToReturn;
+    stringstream sTR;
     for (int i = 0; i < 3; i++){
         for (int j = 0; j < 3; j++){
             if (tiles2D[i][j] != 0){
-                stringToReturn<<tiles2D[i][j]<<" ";
+                sTR<<tiles2D[i][j]<<" ";
             }
             else{
-                stringToReturn<<"  ";
+                sTR<<"  ";
             }
         }
-        stringToReturn<<endl;
+        sTR<<endl;
     }
-    return stringToReturn.str();
+    return sTR.str();
 }
 
-
+//calculate the shortest cost
 int State::getPath(){
     int result=0;
-    if (path.size() > 0)
-    {
+    if(path.size() > 0){
         for (unsigned i=0; i < path.size(); i++){
             result += path.at(i);
+            
         }
-        
-    }
+    }    
+    
     return result;
 }
 
+//get the X and Y for the blank
 int State::getBlankX(){
     for (int i=0;i<3;i++){
         for (int j=0;j<3;j++){
@@ -98,6 +99,7 @@ int State::getBlankY(){
     return 0;
 }
 
+//See which path is possible
 bool State::moveLeft(State& Tiles){
     if (getBlankX() == 2 || getBlankX() == 1){
         Tiles = *this;
@@ -105,9 +107,9 @@ bool State::moveLeft(State& Tiles){
         int tempX = getBlankX();
         int tempY = getBlankY();
         Tiles.tiles2D[getBlankY()][getBlankX()-1] = 0;
-        Tiles.tiles2D[tempY][tempX] = temp;
-      
+        Tiles.tiles2D[tempY][tempX] = temp;      
         Tiles.path.push_back(temp);
+        
         return 1;
     }
     return 0;
@@ -121,8 +123,8 @@ bool State::moveRight(State& Tiles){
         int tempY=getBlankY();
         Tiles.tiles2D[getBlankY()][getBlankX()+1]=0;
         Tiles.tiles2D[tempY][tempX]=temp;
-
         Tiles.path.push_back(temp);
+        
         return 1;
     }
     return 0;
@@ -136,9 +138,9 @@ bool State::moveUp(State& Tiles){
         int tempX=getBlankX();
         int tempY=getBlankY();
         Tiles.tiles2D[getBlankY()-1][getBlankX()]=0;
-        Tiles.tiles2D[tempY][tempX]=temp;
-        
+        Tiles.tiles2D[tempY][tempX]=temp;        
         Tiles.path.push_back(temp);
+        
         return 1;
     }
     return 0;
@@ -153,13 +155,14 @@ bool State::moveDown(State& Tiles){
         int tempY=getBlankY();
         Tiles.tiles2D[getBlankY()+1][getBlankX()]=0;
         Tiles.tiles2D[tempY][tempX]=temp;
-      
         Tiles.path.push_back(temp);
+        
         return 1;
     }
     return 0;
 }
 
+//puch back possible paths
 vector <State> State::expand(){
     vector <State> possible_path;
     State temp;

@@ -1,15 +1,12 @@
 #ifndef BFS_IMPLEMENTATION_H
 #define BFS_IMPLEMENTATION_H
 #include <iostream>
-#include <string>
-#include <sstream>
-#include <stack>
 #include <queue>
 #include <set>
 #include <vector>
-
-#define Width  3
-#define Height  3
+#include <string>
+#include <sstream>
+#include <stack>
 
 using namespace std;
 
@@ -24,6 +21,7 @@ class State{
         bool operator== (const State&) const;
        friend bool operator< (const State& a,const State& o);
         string toString() const;
+        
         int getPath();
         
         int getBlankX();
@@ -35,6 +33,7 @@ class State{
         bool moveLeft(State&);
         vector <State> expand();
         int tiles2D[3][3];
+       
        vector <int> path;
 };
 
