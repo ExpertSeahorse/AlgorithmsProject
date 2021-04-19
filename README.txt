@@ -1,8 +1,17 @@
-DFS:
+BFS implementation:
+    How to compile:
+    g++ -std=c++11 -g -Wall main.cpp Bfs_implementation.cpp
+
+    How to run: (The user can choose either 1 or 2 to test different States)
+    ./a.out 1
+    ./a.out 2
+
+
+DFS implementation:
     To run dfs8puzzle.py the files board1.txt and board2.txt should be in the same directory as dfs8puzzle.py
     To run the program select either board1 or board2 by typing 1 followed by the enter key for board 1 or type 2 followed by the enter key for board 2
 
-Dijkstra:
+Dijkstra implementation:
     Dijkstra's algorithm was implemented using Python 3.8, although most other versions of Python 3.x should work.
 
     With Python 3.8 installed, navigate to the Dijkstra folder and type:
