@@ -1,6 +1,7 @@
 import re
 import sys
 import numpy as np
+from time import time
 
 global min_cost 
 global min_depth
@@ -119,15 +120,8 @@ def dfs(initial_state, goal_state, l):
         explored.add(cur_node.board)
         
         if(cur_node.goalReached()):
-
-            #if the goal state is found the algorithm checks to see if it can be found at a lower cost by decreasing the depth of the search
-            if (dfs(initial_state, goal_state, limit -1)):
-                cur_node.neighbors = []
-                dfs(initial_state, goal_state, limit -1)
-                if cur_node.depth < min_depth:
-                    min_depth= cur_node.depth
-                    min_cost = cur_node.cost
-                
+            if cur_node.cost < min_cost:
+                min_cost = cur_node.cost
             return (cur_node)
     
         for N in cur_node.getNeighbors():
@@ -166,8 +160,16 @@ def main():
     print("Goal State: \n",Gs.reshape(3,3))
     print("Performing DFS...")        
     
-    dfs(Istate,Gstate,15)
+    t = 0
+    ##t0 = time()
+    while(t < 16):
+        dfs(Istate,Gstate,t)
+        t = t+1
+    ##t1 = time()
+
+
     print("Solution: The shortest path cost = ", min_cost) 
+    #print("Time:", t1-t0)
     
 
 if __name__ == '__main__':
